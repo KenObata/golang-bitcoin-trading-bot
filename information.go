@@ -7,8 +7,8 @@ import (
 )
 
 
-func updateStats(b *bittrex.Bittrex, ch chan bittrex.ExchangeState) {
-	log.Printf("updateStats is called.")
+func Statistics(b *bittrex.Bittrex, ch chan bittrex.ExchangeState) {
+	log.Printf("Statistics is called.")
 
 	var err error = nil
 	for {

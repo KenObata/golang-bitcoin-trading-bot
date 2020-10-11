@@ -13,8 +13,8 @@ var (
 	orderIsCancel     = false
 )
 
-func decideBuySell(b *bittrex.Bittrex) {
-	log.Printf("decideBuySell is called.")
+func makeDecision(b *bittrex.Bittrex) {
+	log.Printf("makeDecision is called.")
 	if openOrder && !orderIsCancel && lastPrice > 0.0000001 {
 		// Should we close the open order?
 		for _, o := range orders {

@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/toorop/go-bittrex"
 	"log"
-	"time"
 )
 
 const (
@@ -69,8 +68,9 @@ func main() {
 	ch := make(chan bittrex.ExchangeState, 16)
 
 	//fmt.Println(ch)
-	go updateStats(bittrexClient, ch)
+	go Statistics(bittrexClient, ch)
 
+	/*
 	// 取引判断のときにも毎回取得するが、初期値として一定回数分のtickerを取得しておく
 	var tick_history []TickerResult
 	for i := 0; i < 10; i++ {
@@ -78,15 +78,17 @@ func main() {
 		time.Sleep(1000 * time.Millisecond)
 	}
 	log.Println("tick_history:",tick_history)
-	/*
-	for st := range ch {
 
-		//example) log.Println("st:",st)
-		//st: {BTC-TUSD 0 [] [{{2800 0.00009689} 0} {{11.1504038 0.00009909} 2}] [] false}
+	 */
+
+	for stat:= range ch {
+
+		//example) log.Println("stat:",stat)
+		//stat: {BTC-TUSD 0 [] [{{2800 0.00009689} 0} {{11.1504038 0.00009909} 2}] [] false}
 		//   ={MarketName, nounce, buys=[],sells[Quantity], sell[Rate], sell[Type], fills, initial }
 		// Order placed?
-		updatedIndex := false
-		for _, b := range st.Buys {
+		IndexisUpdated := false
+		for _, b := range stat.Buys {
 			//this is real time market movement based on market-string.
 			log.Println("Buy: ", b.Quantity, " for ", b.Rate, " as ", b.Type)
 			quantity, _ := b.Quantity.Float64()
@@ -94,19 +96,19 @@ func main() {
 
 			//every minutes when buy order occures, index is updated.
 			calculateIndex(true, quantity, rate)
-			updatedIndex = true
+			IndexisUpdated = true
 		}
-		for _, s := range st.Sells {
+		for _, s := range stat.Sells {
 			//Sells[Type]=[0:'Market Order',1:'Limit Order',2:'Ceiling',3:'Good-tilCancel',4:'Imediate or cancel']
 			log.Println("Sell: ", s.Quantity, " for ", s.Rate, " as ", s.Type)
 			quantity, _ := s.Quantity.Float64()
 			rate, _ := s.Rate.Float64()
 			calculateIndex(false, quantity, rate)
-			updatedIndex = true
+			IndexisUpdated = true
 
 		}
 		// Order actually fills
-		for _, f := range st.Fills {
+		for _, f := range stat.Fills {
 			log.Println("Fill: ", f.Quantity, " for ", f.Rate, " as ", f.OrderType)
 			// We could say that lastPrice is technically the fill price
 			tmpLPrice, _ := f.Rate.Float64()
@@ -115,13 +117,13 @@ func main() {
 				lastPrice = tmpLPrice
 			}
 		}
-		if updatedIndex {
+		if IndexisUpdated {
 			log.Printf("BuySellIndex: 		%.8f\n", buySellIndex)
-			decideBuySell(bittrexClient)
+			makeDecision(bittrexClient)
 		}
 	}
 
-	 */
+
 
 }
 
