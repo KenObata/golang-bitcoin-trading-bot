@@ -95,7 +95,7 @@ func main() {
 			rate, _ := b.Rate.Float64()
 
 			//every minutes when buy order occures, index is updated.
-			calculateIndex(true, quantity, rate)
+			updateIndex(true, quantity, rate)
 			IndexisUpdated = true
 		}
 		for _, s := range stat.Sells {
@@ -103,7 +103,7 @@ func main() {
 			log.Println("Sell: ", s.Quantity, " for ", s.Rate, " as ", s.Type)
 			quantity, _ := s.Quantity.Float64()
 			rate, _ := s.Rate.Float64()
-			calculateIndex(false, quantity, rate)
+			updateIndex(false, quantity, rate)
 			IndexisUpdated = true
 
 		}
@@ -131,10 +131,10 @@ func main() {
 
 
 
-func calculateIndex(buy bool, q float64, r float64) {
-	log.Printf("calculateIndex is called.")
-	// q is quantity VTC
-	// r is the rate)
+func updateIndex(buy bool, q float64, r float64) {
+	log.Printf("updateIndex is called.")
+	// q is quantity of TUSD
+	// r is the rate
 	percent := 0.00
 	// Calculate percentage of rate
 	if r > 0.0000 && q > 0.0000 && lastPrice > 0.0000 && readyToRun {
@@ -162,11 +162,14 @@ func calculateIndex(buy bool, q float64, r float64) {
 	if buySellIndex < lowIndex {
 		lowIndex = buySellIndex
 	}
+	/*
 	// Reset really high or low numbers due to startup
-	if highIndex > 5000000.00 || lowIndex < -5000000.00 {
+	if highIndex > 1000000.00 || lowIndex < -1000000.00 {
 		highIndex = 0.00
 		lowIndex = 0.00
 		buySellIndex = 0.00
 	}
+	
+	 */
 }
 
