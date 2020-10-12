@@ -6,8 +6,8 @@ import (
 )
 
 const (
-	API_KEY    = "3211f0dcac7b4de88847d7860ed51837"
-	API_SECRET = "db2f8a39cf3848ba86a6c76aee328b2f"
+	API_KEY    = "xxx"
+	API_SECRET = "xxx"
 	BUY_STRING    = "BTC"
 	SELL_STRING   = "TUSD"
 	MARKET_STRING = BUY_STRING + "-" + SELL_STRING
@@ -122,14 +122,7 @@ func main() {
 			makeDecision(bittrexClient)
 		}
 	}
-
-
-
 }
-
-
-
-
 
 func updateIndex(buy bool, q float64, r float64) {
 	log.Printf("updateIndex is called.")
@@ -169,7 +162,7 @@ func updateIndex(buy bool, q float64, r float64) {
 		lowIndex = 0.00
 		buySellIndex = 0.00
 	}
-	
+
 	 */
 }
 
