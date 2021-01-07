@@ -67,19 +67,7 @@ func main() {
 	*/
 	ch := make(chan bittrex.ExchangeState, 16)
 
-	//fmt.Println(ch)
 	go Statistics(bittrexClient, ch)
-
-	/*
-	// 取引判断のときにも毎回取得するが、初期値として一定回数分のtickerを取得しておく
-	var tick_history []TickerResult
-	for i := 0; i < 10; i++ {
-		tick_history = append(tick_history, &bittrexClient.GetTicker(MARKET_STRING))
-		time.Sleep(1000 * time.Millisecond)
-	}
-	log.Println("tick_history:",tick_history)
-
-	 */
 
 	for stat:= range ch {
 
@@ -140,8 +128,8 @@ func updateIndex(buy bool, q float64, r float64) {
 				buySellIndex = buySellIndex + (percent * q)
 			}
 		} else {
-			//log.Printf("Sell percent: %.4f\n", percent)
-			//log.Printf("Sell quantity: %.4f\n", q)
+			log.Printf("Sell percent: %.4f\n", percent)
+			log.Printf("Sell quantity: %.4f\n", q)
 			//log.Printf("Sell?: %.8f > %.8f && %.8f < %.8f\n", percent, 1.00-ORDER_RANGE, percent, 1.00+ORDER_RANGE)
 			if percent > (1.00-ORDER_RANGE) && percent < (1.00+ORDER_RANGE) {
 				percent = percent - 2.00 // Reverse percent, lower is higher
